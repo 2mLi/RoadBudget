@@ -1,0 +1,53 @@
+/* Update container styles */
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh; /* This ensures full height coverage */
+}
+
+/* Adjust form styling */
+.form-group {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px; /* Better for mobile tapping */
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Adjust result display */
+#result {
+    font-size: 1.2rem;
+    margin-top: 20px;
+    padding: 15px;
+    width: 100%;
+}
+
+/* Add media query for iPhone 14 specific size */
+@media screen and (max-width: 390px) {
+    body {
+        font-size: 16px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+} 
