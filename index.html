@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Fuel Calculator</title>
+    <style>
+        body {
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 15px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007aff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f2f2f2;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fuel Calculator</h1>
+    <div class="input-group">
+        <label for="distance">Distance (miles)</label>
+        <input type="number" id="distance" inputmode="decimal">
+    </div>
+    <div class="input-group">
+        <label for="mpg">MPG</label>
+        <input type="number" id="mpg" inputmode="decimal">
+    </div>
+    <div class="input-group">
+        <label for="fuelPrice">Fuel Price (p/litre)</label>
+        <input type="number" id="fuelPrice" inputmode="decimal">
+    </div>
+    <button onclick="calculateFuelCost()">Calculate</button>
+    <div id="result"></div>
+
+    <script>
+        // Register service worker for offline functionality
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+
+        // Load saved values when page loads
+        window.onload = function() {
+            document.getElementById('distance').value = localStorage.getItem('distance') || '';
+            document.getElementById('mpg').value = localStorage.getItem('mpg') || '';
+            document.getElementById('fuelPrice').value = localStorage.getItem('fuelPrice') || '';
+        }
+
+        // Save input values whenever they change
+        document.getElementById('distance').addEventListener('input', function() {
+            localStorage.setItem('distance', this.value);
+        });
+        document.getElementById('mpg').addEventListener('input', function() {
+            localStorage.setItem('mpg', this.value);
+        });
+        document.getElementById('fuelPrice').addEventListener('input', function() {
+            localStorage.setItem('fuelPrice', this.value);
+        });
+
+        function calculateFuelCost() {
+            const distance = parseFloat(document.getElementById('distance').value);
+            const mpg = parseFloat(document.getElementById('mpg').value);
+            const fuelPrice = parseFloat(document.getElementById('fuelPrice').value);
+
+            if (isNaN(distance) || isNaN(mpg) || isNaN(fuelPrice)) {
+                document.getElementById('result').innerHTML = 'Please enter valid numbers';
+                return;
+            }
+
+            const litresPerMile = 4.54609188 / mpg;
+            const totalLitres = distance * litresPerMile;
+            const costInPounds = (totalLitres * fuelPrice) / 100;
+
+            document.getElementById('result').innerHTML = `
+                Distance: ${distance.toFixed(1)} miles<br>
+                Fuel needed: ${totalLitres.toFixed(2)} litres<br>
+                Cost: £${costInPounds.toFixed(2)}
+            `;
+        }
+    </script>
+</body>
+</html> 
